@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Release :: DevOps Stack</title>
+    <title>Deploying with pipelines :: DevOps Stack</title>
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -86,7 +86,7 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="2">
+  <li class="nav-item is-current-page" data-depth="2">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="pipelines.html">Pipelines</a>
 <ul class="nav-list">
@@ -108,7 +108,7 @@
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="write_documentation.html">Documentation</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="3">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="release.html">Release a new version</a>
   </li>
 </ul>
@@ -276,90 +276,163 @@
   <ul>
     <li><a href="../index.html">DevOps Stack</a></li>
     <li>Howtos</li>
-    <li><a href="#ROOT:howtos/contributions.adoc">Contribution</a></li>
-    <li><a href="release.html">Release a new version</a></li>
+    <li><a href="pipelines.html">Pipelines</a></li>
   </ul>
 </nav>
 <div class="page-versions">
   <button class="version-menu-toggle" title="Show other versions of page">latest</button>
   <div class="version-menu">
-    <a class="version is-current" href="release.html">latest</a>
-    <a class="version" href="../../0.33.0/howtos/release.html">0.33.0</a>
-    <a class="version" href="../../0.32.0/howtos/release.html">0.32.0</a>
-    <a class="version" href="../../0.31.0/howtos/release.html">0.31.0</a>
-    <a class="version" href="../../0.30.0/howtos/release.html">0.30.0</a>
+    <a class="version is-current" href="pipelines.html">latest</a>
+    <a class="version is-missing" href="../../0.33.0/index.html">0.33.0</a>
+    <a class="version is-missing" href="../../0.32.0/index.html">0.32.0</a>
+    <a class="version is-missing" href="../../0.31.0/index.html">0.31.0</a>
+    <a class="version is-missing" href="../../0.30.0/index.html">0.30.0</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/halasystems/devops-stack/edit/master/docs/modules/ROOT/pages/howtos/release.adoc"><i class="fa fa-github-alt"></i>&nbsp;Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/halasystems/devops-stack/edit/master/docs/modules/ROOT/pages/howtos/pipelines.adoc"><i class="fa fa-github-alt"></i>&nbsp;Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Release</h1>
+<h1 class="page">Deploying with pipelines</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document describes how to set up a CI/CD environment using Devops Stack and GitLab/GitHub pipelines.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>Update <code>docs/modules/ROOT/pages/references/changelog.adoc</code></p>
+<p>Access to API keys allowing to create required resources cloud environment,</p>
 </li>
 <li>
-<p>Update the version number (e.g. <code>v0.29.0</code>) in the following files (mandatory):</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/docs/antora.yml#L4">docs/antora.yml</a></p>
+<p>Access to GitLab or GitHub (only supported CI/CD for now),</p>
 </li>
 <li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/site/config.toml#L18">site/config.toml</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/.gitlab-ci/pipeline.yaml">.gitlab-ci/pipeline.yaml</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/variables.tf">modules/variables.tf</a></p>
+<p>Knowledge of <a href="https://terraform.io">Terraform</a> basics</p>
 </li>
 </ul>
 </div>
-</li>
-<li>
-<p>Optionally update the version number in the following files:</p>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_standard_workflow"><a class="anchor" href="#_standard_workflow"></a>Standard Workflow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When deploying with pipelines, the DevOps Stack runs a dry-run on <strong>Merge Request</strong> and applies the modification on <strong>Commit on a Protected Branch</strong>.
+Depending on the nature of the pipeline trigger we will find the following behaviors:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/examples/eks-aws/.gitlab-ci.yml">examples/eks-aws/.gitlab-ci.yml</a></p>
+<p>If pipeline is being triggered by a Merge Request then it will run a <code>terraform plan</code>, this will provide user with the output of the planned changes in the infrastructure.
+This will not touch your infra-structure.</p>
 </li>
 <li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/eks-aws/main.tf">examples/eks-aws/terraform/main.tf</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/k3o-libvirt/main.tf">examples/k3s-libvirt-demo-app/terraform/main.tf</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/k3s-docker/main.tf">examples/k3s-docker-demo-app/terraform/main.tf</a></p>
+<p>If pipeline is being triggered by a Commit on a Protected Branch (e.g. by an approved merge request into your main branch) then it will run a self-approved <code>terraform apply</code>. This will update your infrastructure according to the the <code>terraform plan</code>.</p>
 </li>
 </ul>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+It is highly recommended to prohibit (at an admin level) committing changes directly to your <code>protected branch</code>, hence forcing developers to review the <code>terraform plan</code> in the MR before applying any changes to the infrastructure.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_terraform_resource_migration_workflow"><a class="anchor" href="#_terraform_resource_migration_workflow"></a>Terraform Resource Migration Workflow</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This only applies to GiLab Pipelines
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The GitLab pipeline integrates [tfmigrate](<a href="https://github.com/minamijoyo/tfmigrate" class="bare">https://github.com/minamijoyo/tfmigrate</a>).
+It can handle automatically <code>terraform state mv</code> for renaming terraform resources when using remote state.</p>
+</div>
+<div class="paragraph">
+<p>Why do we need this? Please see [official documentation](<a href="https://github.com/minamijoyo/tfmigrate#why" class="bare">https://github.com/minamijoyo/tfmigrate#why</a>)</p>
+</div>
+<div class="paragraph">
+<p>The workflow for moving terraform state is the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Push your tf renamed resources and create a merge request (MR).
+Make sure introduced changes  <strong>do not introduce a new tf resource</strong> (for every planned ADD there should be a DELETE and vice-versa). Other type of planned changes will end up on a pipeline failure.</p>
 </li>
 <li>
-<p>Create a pull request with the updated version. Once it has been reviewed and approved, merge it to <code>master</code></p>
+<p>Check pipeline output (<code>terraform plan</code> output), see planned ADD and DELETE resources of MR, verify previous statement, else remove whatever extra bit you added, and go back to step 1.</p>
 </li>
 <li>
-<p>Tag the merged commit (e.g. <code>v0.29.0</code>)</p>
+<p>Create <code>tfmigrate.hcl</code> file and describe those operations, each MOVE operation should correspond to a ADD and DELETE planned operation.</p>
+<div class="literalblock">
+<div class="content">
+<pre>For example:</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```hcl
+ migration "state" "test" {
+     actions = [
+         "mv module.my_old_module.azurerm_key_vault.vault_test module.my_new_module.azurerm_key_vault.this",
+     ]
+ }
+ ```</pre>
+</div>
+</div>
 </li>
 <li>
-<p>Push the tag</p>
+<p>Commit and push file into MR, check pipeline (<code>tfmigrate plan</code> output).</p>
 </li>
 <li>
-<p>Create a new <a href="https://github.com/camptocamp/devops-stack/releases">release</a> via the GitHub release page, naming it the same as the version number - e.g. <code>v0.29.0</code>. Ensure to state what&#8217;s new in the release</p>
+<p>Merge MR (this corresponds to a <code>tfmigrate apply</code>, equivalent to moving the states).</p>
 </li>
 <li>
-<p>Set back the release to <code>latest</code> in <a href="https://github.com/camptocamp/devops-stack/blob/master/docs/antora.yml#L4">docs/antora.yml</a></p>
+<p>Delete <code>tfmigrate.hcl</code> file, push and merge.</p>
 </li>
 <li>
-<p>Set back the target_revision to <code>master</code> in <a href="https://github.com/camptocamp/devops-stack/blob/master/modules/variables.tf#15">modules/variables.tf</a></p>
+<p>Proceed with other tf config modifications.</p>
 </li>
-</ul>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_more"><a class="anchor" href="#_more"></a>More</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>See the <a href="pipelines_gitlab.html" class="page">Creating your GitLab pipeline</a>.</p>
+</div>
+<div class="paragraph">
+<p>See the <a href="pipelines_github.html" class="page">Creating your GitHub pipeline</a>.</p>
+</div>
+</div>
 </div>
 </article>
   </div>
@@ -371,7 +444,7 @@
 <script>
   window.antora = window.antora || {}
   window.antora.basePath = '../../..'
-  window.antora.pagePath = '/devops-stack/latest/howtos/release.html'
+  window.antora.pagePath = '/devops-stack/latest/howtos/pipelines.html'
 </script>
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/terraform.js"></script>

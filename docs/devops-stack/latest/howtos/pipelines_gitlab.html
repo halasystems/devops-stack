@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Release :: DevOps Stack</title>
+    <title>Untitled :: DevOps Stack</title>
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../../../_/css/site.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -90,7 +90,7 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="pipelines.html">Pipelines</a>
 <ul class="nav-list">
-  <li class="nav-item" data-depth="3">
+  <li class="nav-item is-current-page" data-depth="3">
     <a class="nav-link" href="pipelines_gitlab.html">Create your GitLab Pipeline</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -108,7 +108,7 @@
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="write_documentation.html">Documentation</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="3">
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="release.html">Release a new version</a>
   </li>
 </ul>
@@ -276,90 +276,84 @@
   <ul>
     <li><a href="../index.html">DevOps Stack</a></li>
     <li>Howtos</li>
-    <li><a href="#ROOT:howtos/contributions.adoc">Contribution</a></li>
-    <li><a href="release.html">Release a new version</a></li>
+    <li><a href="pipelines.html">Pipelines</a></li>
+    <li><a href="pipelines_gitlab.html">Create your GitLab Pipeline</a></li>
   </ul>
 </nav>
 <div class="page-versions">
   <button class="version-menu-toggle" title="Show other versions of page">latest</button>
   <div class="version-menu">
-    <a class="version is-current" href="release.html">latest</a>
-    <a class="version" href="../../0.33.0/howtos/release.html">0.33.0</a>
-    <a class="version" href="../../0.32.0/howtos/release.html">0.32.0</a>
-    <a class="version" href="../../0.31.0/howtos/release.html">0.31.0</a>
-    <a class="version" href="../../0.30.0/howtos/release.html">0.30.0</a>
+    <a class="version is-current" href="pipelines_gitlab.html">latest</a>
+    <a class="version is-missing" href="../../0.33.0/index.html">0.33.0</a>
+    <a class="version is-missing" href="../../0.32.0/index.html">0.32.0</a>
+    <a class="version is-missing" href="../../0.31.0/index.html">0.31.0</a>
+    <a class="version is-missing" href="../../0.30.0/index.html">0.30.0</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/halasystems/devops-stack/edit/master/docs/modules/ROOT/pages/howtos/release.adoc"><i class="fa fa-github-alt"></i>&nbsp;Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/halasystems/devops-stack/edit/master/docs/modules/ROOT/pages/howtos/pipelines_gitlab.adoc"><i class="fa fa-github-alt"></i>&nbsp;Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Release</h1>
-<div class="ulist">
-<ul>
-<li>
-<p>Update <code>docs/modules/ROOT/pages/references/changelog.adoc</code></p>
-</li>
-<li>
-<p>Update the version number (e.g. <code>v0.29.0</code>) in the following files (mandatory):</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/docs/antora.yml#L4">docs/antora.yml</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/site/config.toml#L18">site/config.toml</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/.gitlab-ci/pipeline.yaml">.gitlab-ci/pipeline.yaml</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/variables.tf">modules/variables.tf</a></p>
-</li>
-</ul>
+<div class="sect1">
+<h2 id="_creating_your_pipeline_with_gitlab"><a class="anchor" href="#_creating_your_pipeline_with_gitlab"></a>Creating your Pipeline with GitLab</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_gitlab_ci"><a class="anchor" href="#_gitlab_ci"></a>GitLab CI</h3>
+<div class="sect3">
+<h4 id="_push_your_code_in_a_new_project_on_gitlab"><a class="anchor" href="#_push_your_code_in_a_new_project_on_gitlab"></a>Push your code in a new project on Gitlab</h4>
+<div class="paragraph">
+<p>Create a new project on GitLab and push your Terraform files on it.
+You can use either gitlab.com or your self hosted GitLab instance.</p>
 </div>
-</li>
-<li>
-<p>Optionally update the version number in the following files:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/examples/eks-aws/.gitlab-ci.yml">examples/eks-aws/.gitlab-ci.yml</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/eks-aws/main.tf">examples/eks-aws/terraform/main.tf</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/k3o-libvirt/main.tf">examples/k3s-libvirt-demo-app/terraform/main.tf</a></p>
-</li>
-<li>
-<p><a href="https://github.com/camptocamp/devops-stack/blob/master/modules/k3s-docker/main.tf">examples/k3s-docker-demo-app/terraform/main.tf</a></p>
-</li>
-</ul>
 </div>
-</li>
-<li>
-<p>Create a pull request with the updated version. Once it has been reviewed and approved, merge it to <code>master</code></p>
-</li>
-<li>
-<p>Tag the merged commit (e.g. <code>v0.29.0</code>)</p>
-</li>
-<li>
-<p>Push the tag</p>
-</li>
-<li>
-<p>Create a new <a href="https://github.com/camptocamp/devops-stack/releases">release</a> via the GitHub release page, naming it the same as the version number - e.g. <code>v0.29.0</code>. Ensure to state what&#8217;s new in the release</p>
-</li>
-<li>
-<p>Set back the release to <code>latest</code> in <a href="https://github.com/camptocamp/devops-stack/blob/master/docs/antora.yml#L4">docs/antora.yml</a></p>
-</li>
-<li>
-<p>Set back the target_revision to <code>master</code> in <a href="https://github.com/camptocamp/devops-stack/blob/master/modules/variables.tf#15">modules/variables.tf</a></p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_protect_your_branch"><a class="anchor" href="#_protect_your_branch"></a>Protect your branch</h4>
+<div class="paragraph">
+<p>The cluster creation pipeline is triggered only on protected branches,
+so you have to protect every branch that will define a cluster
+(in Settings &#8658; Repository &#8658; Protected Branches).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_add_ci_cd_variables"><a class="anchor" href="#_add_ci_cd_variables"></a>Add CI / CD variables</h4>
+<div class="paragraph">
+<p>There are multiple ways to configure the
+{terraform-provider-link}[Terraform {terraform-provider} provider].
+You could commit the credentials in your code,
+with a high potential risk of secret leakage,
+or another simple solution is to define the required environment variables as CI/CD variables.</p>
+</div>
+<div class="paragraph">
+<p>In your project&#8217;s Setting → CI/CD → Variables, add variables for:</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_gitlab_ci_yml"><a class="anchor" href="#_create_gitlab_ci_yml"></a>Create <code>.gitlab-ci.yml</code></h4>
+<div class="paragraph">
+<p>In order to use Gitlab as Continuous Delivery,
+you have to create a <code>.gitlab-ci.yml</code> file in the root level of your project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
+include:
+  - https://raw.githubusercontent.com/camptocamp/devops-stack/v0.26.0/.gitlab-ci/pipeline.yaml</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_trigger_pipeline"><a class="anchor" href="#_trigger_pipeline"></a>Trigger pipeline</h4>
+<div class="paragraph">
+<p>The pipeline, and hence the cluster creation,
+will be triggered when you push to a protected branch,
+but you can trigger a pipeline manually if needed (in CI/CD ⇒ Pipelines ⇒ Run Pipeline).</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 </article>
   </div>
@@ -371,7 +365,7 @@
 <script>
   window.antora = window.antora || {}
   window.antora.basePath = '../../..'
-  window.antora.pagePath = '/devops-stack/latest/howtos/release.html'
+  window.antora.pagePath = '/devops-stack/latest/howtos/pipelines_gitlab.html'
 </script>
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/terraform.js"></script>
