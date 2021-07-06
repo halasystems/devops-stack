@@ -315,6 +315,12 @@
 <li>
 <p>Minimal Terraform version: 0.14</p>
 </li>
+<li>
+<p><code>jq</code> binary</p>
+</li>
+<li>
+<p><a href="https://argoproj.github.io/argo-cd/cli_installation/">argocd</a> CLI</p>
+</li>
 </ul>
 </div>
 </div>
@@ -330,7 +336,9 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-hcl hljs" data-lang="hcl">module "cluster" {
+<pre class="highlightjs highlight"><code class="language-hcl hljs" data-lang="hcl"># terraform/main.tf
+
+module "cluster" {
   source = "git::https://github.com/camptocamp/devops-stack.git//modules/k3s/docker?ref=master"
 
   cluster_name = "my-cluster"
@@ -343,7 +351,9 @@ You can specify the published ports of the K3S master and the base domain to use
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-hcl hljs" data-lang="hcl">module "cluster" {
+<pre class="highlightjs highlight"><code class="language-hcl hljs" data-lang="hcl"># terraform/main.tf
+
+module "cluster" {
   source = "git::https://github.com/camptocamp/devops-stack.git//modules/k3s/docker?ref=master"
 
   cluster_name = "my-cluster"
